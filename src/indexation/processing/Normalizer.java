@@ -1,15 +1,16 @@
 package indexation.processing;
 
-import indexation.content.Token;
-
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
+import indexation.content.Token;
 import tools.Configuration;
 
 /**
@@ -43,9 +44,27 @@ public class Normalizer implements Serializable {
 	 * @param tokens Liste de tokens à traiter.
 	 */
 	public void normalizeTokens(List<Token> tokens) {
-		// TODO méthode à compléter (TP1-ex7)
+		for (Iterator<Token> iter = tokens.listIterator(); iter.hasNext();) {
+			Token token = iter.next();
+			String normalizedType = normalizeType(token.getType());
+			if (normalizedType != null) {
+				token.setType(normalizedType);
+			} 
+			else {
+				iter.remove();
+			}
+		}
 	}
 
+	/*
+	 * 	for (Iterator<String> iter = list.listIterator(); iter.hasNext(); ) {
+		    String a = iter.next();
+		    if (...) {
+		        iter.remove();
+		    }
+		}
+	 */
+	
 	/**
 	 * Nettoie le type de token reçu en paramètre. S'il ne correspond pas à un
 	 * terme, c'est la valeur {@code null} qui est renvoyée.
@@ -96,8 +115,9 @@ public class Normalizer implements Serializable {
 	 */
 	private void initStopWords() throws FileNotFoundException, UnsupportedEncodingException {
 		stopWords = new TreeSet<String>();
-		if (Configuration.isFilteringStopWords())
+		if (Configuration.isFilteringStopWords()) {
 			loadStopWords();
+		}
 	}
 
 	/**
@@ -123,6 +143,7 @@ public class Normalizer implements Serializable {
 	 * @throws Exception Problème quelconque rencontré.
 	 */
 	public static void main(String[] args) throws Exception {
+		Tokenizer tokenizer = new Tokenizer();
 		Normalizer normalizer = new Normalizer();
 
 		// test de normalizeType
@@ -132,7 +153,11 @@ public class Normalizer implements Serializable {
 		System.out.println("null test: " + normalizer.normalizeType(""));
 
 		// test de normalizeTokens
+		String file = ".." + File.separator + "Common" + File.separator + "wp" + File.separator
+				+ "001f1107-8e72-4250-8b83-ef02eeb4d4a4.txt";
 		List<Token> tokens = new ArrayList<Token>();
+		tokenizer.tokenizeDocument(new File(file), 0, tokens);
+		normalizer.normalizeTokens(tokens);
 
 		// test de loadStopWords
 		// TODO méthode à compléter (TP5-ex7)

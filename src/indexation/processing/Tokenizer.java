@@ -38,10 +38,8 @@ public class Tokenizer implements Serializable {
 	 *                                      d'un document.
 	 */
 	public int tokenizeCorpus(List<Token> tokens) throws UnsupportedEncodingException {
-		int result = 0;
 		int docId = 0;
 
-		Configuration.setCorpusName("wp_test");
 		String folder = FileTools.getCorpusFolder();
 		File[] listOfFiles = new File(folder).listFiles();
 
@@ -62,7 +60,7 @@ public class Tokenizer implements Serializable {
 			}
 		}
 
-		return result;
+		return docId;
 	}
 
 	/**
@@ -143,7 +141,8 @@ public class Tokenizer implements Serializable {
 
 		// test de tokenizeCorpus
 		tokensList = new ArrayList<Token>();
-		tokenizer.tokenizeCorpus(tokensList);
-		System.out.println("tokenizeCorpus number of tokens: " + tokensList.size());
+		Configuration.setCorpusName("wp_test");
+		int documentNumber = tokenizer.tokenizeCorpus(tokensList);
+		System.out.println("tokenizeCorpus: " + tokensList.size() + " number of tokens for " + documentNumber + " documents.");
 	}
 }
