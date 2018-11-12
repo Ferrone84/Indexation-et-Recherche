@@ -55,15 +55,6 @@ public class Normalizer implements Serializable {
 			}
 		}
 	}
-
-	/*
-	 * 	for (Iterator<String> iter = list.listIterator(); iter.hasNext(); ) {
-		    String a = iter.next();
-		    if (...) {
-		        iter.remove();
-		    }
-		}
-	 */
 	
 	/**
 	 * Nettoie le type de token reçu en paramètre. S'il ne correspond pas à un

@@ -1,5 +1,7 @@
 package indexation;
 
+import java.util.Arrays;
+
 import indexation.content.IndexEntry;
 import indexation.content.Posting;
 
@@ -31,22 +33,42 @@ public class ArrayIndex extends AbstractIndex {
 
 	@Override
 	public void addEntry(IndexEntry indexEntry, int rank) {
-		// TODO méthode à compléter (TP1-ex12)
-		//data[0] = indexEntry;
+		if (rank < 0) {
+			throw new IllegalArgumentException("Rank cannot be negative.");
+		}
+
+		if (rank >= data.length) {
+			throw new IllegalArgumentException("Rank cannot be superior to the list size.");
+		}
+
+		data[rank] = indexEntry;
 	}
 
 	@Override
 	public IndexEntry getEntry(String term) {
-		IndexEntry result = null;
-		// TODO méthode à compléter (TP1-ex13)
-		return result;
+		if (term == null) {
+			return null;
+		}
+
+		int searchResult = Arrays.binarySearch(data, new IndexEntry(term));
+		if (searchResult < 0) {
+			return null;
+		}
+
+		return data[searchResult];
 	}
 
 	@Override
 	public int getSize() {
-		int result = 0;
-		// TODO méthode à compléter (TP1-ex14)
-		return result;
+		int index = 0;
+
+		for (IndexEntry indexEntry : data) {
+			if (indexEntry != null) {
+				index++;
+			}
+		}
+
+		return index;
 	}
 
 	/**
@@ -67,7 +89,9 @@ public class ArrayIndex extends AbstractIndex {
 	@Override
 	public void print() {
 		for (IndexEntry indexEntry : data) {
-			System.out.println(indexEntry);
+			if (indexEntry != null) {
+				System.out.println(indexEntry);
+			}
 		}
 	}
 
@@ -87,26 +111,37 @@ public class ArrayIndex extends AbstractIndex {
 		Posting posting2 = new Posting(10);
 		Posting posting3 = new Posting(2);
 		Posting posting4 = new Posting(2);
-		
-		IndexEntry indexEntry1 = new IndexEntry("maison");
+
+		IndexEntry indexEntry1 = new IndexEntry("autre");
 		indexEntry1.addPosting(posting1);
 		indexEntry1.addPosting(posting2);
 		indexEntry1.addPosting(posting3);
 		indexEntry1.addPosting(posting4);
-		
-		ArrayIndex arrayIndex = new ArrayIndex(5);
+
+		IndexEntry indexEntry2 = new IndexEntry("lambda");
+		indexEntry1.addPosting(posting4);
+
+		IndexEntry indexEntry3 = new IndexEntry("maison");
+
+		ArrayIndex arrayIndex = new ArrayIndex(2);
 
 		// test de print
 		arrayIndex.print();
 
 		// test de addEntry
-		// TODO méthode à compléter (TP1-ex12)
-		//arrayIndex.addEntry(indexEntry1, rank);
+		arrayIndex.addEntry(indexEntry1, 0);
+		arrayIndex.addEntry(indexEntry2, 1);
+		arrayIndex.print();
 
 		// test de getEntry
-		// TODO méthode à compléter (TP1-ex13)
+		System.out.println("getEntry on existing element: " + arrayIndex.getEntry(indexEntry1.getTerm()));
+		System.out.println("getEntry on non existing element: " + arrayIndex.getEntry(indexEntry3.getTerm()));
 
 		// test de getSize
-		// TODO méthode à compléter (TP1-ex14)
+		System.out.println("getSize: " + arrayIndex.getSize());
+		arrayIndex.addEntry(indexEntry1, 0);
+		System.out.println("getSize: " + arrayIndex.getSize());
+		arrayIndex.addEntry(indexEntry1, 2);	//Generate an exception because the array have a size of 2, not 3
+		System.out.println("getSize: " + arrayIndex.getSize());
 	}
 }

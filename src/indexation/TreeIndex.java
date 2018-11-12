@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import indexation.content.IndexEntry;
+import indexation.content.Posting;
 
 /**
  * Objet représentant un index sous la forme d'un fichier inverse simple, dont
@@ -28,21 +29,17 @@ public class TreeIndex extends AbstractIndex {
 
 	@Override
 	public void addEntry(IndexEntry indexEntry, int rank) {
-		// TODO méthode à compléter (TP1-ex12)
+		data.put(indexEntry.getTerm(), indexEntry);
 	}
 
 	@Override
 	public IndexEntry getEntry(String term) {
-		IndexEntry result = null;
-		// TODO méthode à compléter (TP1-ex13)
-		return result;
+		return data.get(term);
 	}
 
 	@Override
 	public int getSize() {
-		int result = 0;
-		// TODO méthode à compléter (TP1-ex14)
-		return result;
+		return data.size();
 	}
 
 	////////////////////////////////////////////////////
@@ -53,7 +50,7 @@ public class TreeIndex extends AbstractIndex {
 	 */
 	@Override
 	public void print() {
-		for(Map.Entry<String, IndexEntry> entry : data.entrySet()) {
+		for (Map.Entry<String, IndexEntry> entry : data.entrySet()) {
 			System.out.println(entry.getValue());
 		}
 	}
@@ -70,18 +67,44 @@ public class TreeIndex extends AbstractIndex {
 	 */
 	public static void main(String[] args) throws Exception {
 		// test du constructeur
-		HashIndex hashIndex = new HashIndex(5);
+		Posting posting1 = new Posting(5);
+		Posting posting2 = new Posting(10);
+		Posting posting3 = new Posting(2);
+		Posting posting4 = new Posting(2);
+
+		IndexEntry indexEntry1 = new IndexEntry("maison");
+		indexEntry1.addPosting(posting1);
+		indexEntry1.addPosting(posting2);
+		indexEntry1.addPosting(posting3);
+		indexEntry1.addPosting(posting4);
+
+		IndexEntry indexEntry2 = new IndexEntry("autre");
+		indexEntry1.addPosting(posting4);
+
+		IndexEntry indexEntry3 = new IndexEntry("lambda");
+
+		TreeIndex treeIndex = new TreeIndex();
 
 		// test de print
-		hashIndex.print();
+		treeIndex.print();
 
 		// test de addEntry
-		// TODO méthode à compléter (TP1-ex12)
+		treeIndex.addEntry(indexEntry1, 0);
+		treeIndex.print();
+		System.out.println("getSize: " + treeIndex.getSize());
+		treeIndex.addEntry(indexEntry2, 0);
+		treeIndex.print();
+		System.out.println("getSize: " + treeIndex.getSize());
 
 		// test de getEntry
-		// TODO méthode à compléter (TP1-ex13)
+		System.out.println("getEntry on existing element: " + treeIndex.getEntry(indexEntry1.getTerm()));
+		System.out.println("getEntry on non existing element: " + treeIndex.getEntry(indexEntry3.getTerm()));
 
 		// test de getSize
-		// TODO méthode à compléter (TP1-ex14)
+		System.out.println("getSize: " + treeIndex.getSize());
+		treeIndex.addEntry(indexEntry1, 0);
+		System.out.println("getSize: " + treeIndex.getSize());
+		treeIndex.addEntry(indexEntry3, 0);
+		System.out.println("getSize: " + treeIndex.getSize());
 	}
 }
