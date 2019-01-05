@@ -84,9 +84,7 @@ public class Tokenizer implements Serializable {
 				String line = scanner.nextLine();
 
 				for (String token : tokenizeString(line)) {
-					if (!token.isEmpty()) {
-						tokens.add(new Token(token, docId));
-					}
+					tokens.add(new Token(token, docId));
 				}
 			}
 			scanner.close();
@@ -103,7 +101,14 @@ public class Tokenizer implements Serializable {
 	 */
 	public List<String> tokenizeString(String string) {
 		String regex = "[^\\pL\\pN]+";
-		return Arrays.asList(string.split(regex));
+		ArrayList<String> result = new ArrayList<>();
+		
+		for (String token : string.split(regex)) {
+			if (! token.isEmpty()) {
+				result.add(token);
+			}
+		}
+		return result;
 	}
 
 	////////////////////////////////////////////////////

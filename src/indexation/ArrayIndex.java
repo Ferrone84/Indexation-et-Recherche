@@ -60,15 +60,7 @@ public class ArrayIndex extends AbstractIndex {
 
 	@Override
 	public int getSize() {
-		int index = 0;
-
-		for (IndexEntry indexEntry : data) {
-			if (indexEntry != null) {
-				index++;
-			}
-		}
-
-		return index;
+		return data.length;
 	}
 
 	/**
@@ -141,7 +133,12 @@ public class ArrayIndex extends AbstractIndex {
 		System.out.println("getSize: " + arrayIndex.getSize());
 		arrayIndex.addEntry(indexEntry1, 0);
 		System.out.println("getSize: " + arrayIndex.getSize());
-		arrayIndex.addEntry(indexEntry1, 2);	//Generate an exception because the array have a size of 2, not 3
+		try {
+			arrayIndex.addEntry(indexEntry1, 2);	//Generate an exception because the array have a size of 2, not 3
+		}
+		catch (IllegalArgumentException e) {
+			System.out.println("Exception catched : " + e.getMessage());
+		}
 		System.out.println("getSize: " + arrayIndex.getSize());
 	}
 }

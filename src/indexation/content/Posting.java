@@ -78,9 +78,7 @@ public class Posting implements Serializable, Comparable<Posting> {
 	////////////////////////////////////////////////////
 	@Override
 	public String toString() {
-		String result = null;
-		result = String.valueOf(docId);
-		// TODO méthode à modifier (TP6-ex3)
+		String result = "<" + docId + " [" + frequency + "]>";
 		return result;
 	}
 
